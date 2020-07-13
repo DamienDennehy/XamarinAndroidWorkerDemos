@@ -4,6 +4,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
+using AndroidX.Work;
+using XamarinAndroidWorkerDemos.Workers;
 
 namespace XamarinAndroidWorkerDemos
 {
@@ -31,6 +33,15 @@ namespace XamarinAndroidWorkerDemos
             int id = item.ItemId;
             if (id == Resource.Id.action_start_worker)
             {
+                var simpleWorkerRequest = 
+                    new OneTimeWorkRequest.Builder(typeof(SimpleWorker))
+                    .AddTag(SimpleWorker.TAG)
+                    .Build();
+
+                WorkManager.GetInstance(this).BeginUniqueWork(
+                    SimpleWorker.TAG, ExistingWorkPolicy.Keep, simpleWorkerRequest)
+                    .Enqueue();
+
                 return true;
             }
             else if (id == Resource.Id.action_start_listenable_worker)
