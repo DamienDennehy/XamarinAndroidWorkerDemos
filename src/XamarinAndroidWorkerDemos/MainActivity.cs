@@ -46,6 +46,15 @@ namespace XamarinAndroidWorkerDemos
             }
             else if (id == Resource.Id.action_start_listenable_worker)
             {
+                var simpleListenableWorkerRequest =
+                    new OneTimeWorkRequest.Builder(typeof(SimpleListenableWorker))
+                    .AddTag(SimpleListenableWorker.TAG)
+                    .Build();
+
+                WorkManager.GetInstance(this).BeginUniqueWork(
+                    SimpleListenableWorker.TAG, ExistingWorkPolicy.Keep, simpleListenableWorkerRequest)
+                    .Enqueue();
+
                 return true;
             }
 
