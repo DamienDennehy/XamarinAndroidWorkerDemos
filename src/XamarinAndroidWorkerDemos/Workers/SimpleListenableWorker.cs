@@ -32,7 +32,18 @@ namespace XamarinAndroidWorkerDemos.Workers
             {
                 //Perform a process here, simulated by a delay for 5 seconds.
 
-                await Task.Delay(5000);
+                var delaySeconds = 5;
+                var progress = 0;
+                var progressIncrement = 100 / delaySeconds;
+                var dataBuilder = new Data.Builder();
+
+                for (int i = 0; i < delaySeconds+1; i++)
+                {
+                    await Task.Delay(1000);
+                    progress += progressIncrement;
+                    dataBuilder.PutInt("Progress", progress);
+                    SetProgressAsync(dataBuilder.Build());
+                }
 
                 Log.Debug(TAG, "Completed.");
 

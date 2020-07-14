@@ -98,12 +98,19 @@ namespace XamarinAndroidWorkerDemos
                 textViewText = new StringBuilder(_textView.Text);
             });
 
-
             foreach (var workInfo in workInfos)
             {
                 //Ignore the default Xamarin Tag when getting the Tag.
                 var name = workInfo.Tags.First(t => !t.Contains("."));
-                textViewText.Append($"{System.Environment.NewLine}{name}:{workInfo.GetState()}");
+                var progress = workInfo.Progress?.GetInt("Progress", -1) ?? -1;
+                if (progress == -1)
+                {
+                    textViewText.Append($"{System.Environment.NewLine}{name}:{workInfo.GetState()}");
+                }
+                else
+                {
+                    textViewText.Append($"{System.Environment.NewLine}{name}:{workInfo.GetState()} {progress}%");
+                }
             }
 
             RunOnUiThread(() =>
